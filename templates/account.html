@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Account - {% endblock %}
+{% block content %}
+
+<script>
+    function toggleVisible(className) {
+      var x = document.getElementById(className);
+      var bg = document.getElementById('form-content');
+      if (x.style.display === "block") {
+        x.style.display = "none";
+        bg.style.height = "93vh";
+      } else {
+        x.style.display = "block";
+        bg.style.height =  "150vh";
+      }
+    }
+</script>
+
+<div class="formcontent" id="form-content">
+  <div id="result-q">Hello, {{user.username}}!</div>
+
+    <div class="row">
+        <div class="cell">
+            <button class="account-btn" onclick="toggleVisible('gather')" title="Click me!"><p>What information we gather from you?</p></button>
+            <div id="gather">
+            <ul>
+                <li><p>When you register:</p></li>
+                <ul>
+                    <li><p>username</p></li>
+                    <li><p>password in hashed form (sha256)</p></li>
+                </ul>
+                <li><p>When you vote:</p></li>
+                <ul>
+                    <li><p>vote id of the vote you have contributed</p></li>
+                    <li><p>your answer to the vote</p></li>
+                </ul>
+                <li><p>If you have created votes:</p></li>
+                <ul>
+                    <li><p>Vote question</p></li>
+                    <li><p>Vote answer options</p></li>
+                    <li><p>Vote date and time (GMT)</p></li>
+                    <li><p>your username as creator of the vote</p></li>
+                </ul>
+                <li><p>When you visit our website</p></li>
+                <ul>
+                    <li><p>User agent, for checking if mobile user (not saved)</p></li>
+                </ul>
+            </ul>
+        </div>
+        </div>
+        <div class="cell">
+            <button class="account-btn" onclick="toggleVisible('visible')" title="Click me!"><p>What information is visible for everyone?</p></button>
+            <div id="visible">
+
+        <ul>
+            <li><p>When you register:</p></li>
+            <ul>
+                <li><p>Nothing</p></li>
+            </ul>
+            <li><p>When you vote:</p></li>
+            <ul>
+                <li><p>your username and answer in vote results</p></li>
+            </ul>
+            <li><p>If you have created votes:</p></li>
+            <ul>
+                <li><p>Vote question</p></li>
+                <li><p>Vote answer options</p></li>
+                <li><p>Vote date and time (GMT)</p></li>
+                <li><p>your username as creator of the vote</p></li>
+            </ul>
+        </ul>
+        </div>
+        </div>
+        <div class="cell">
+            <button class="account-btn" onclick="toggleVisible('delete')"><p>Delete account</p></button>
+            <div id="delete">
+                <p>I am sorry, you cannot delete your account for now.<br> Account deletion has not been created yet.</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="cell">
+            <a href="/account/votes/created">
+                <button class="account-btn" title="Click me!"><p>Check votes you have created</p></button>
+            </a>
+        </div>
+        <div class="cell">
+            <a href="/account/votes/voted">
+            <button class="account-btn" title="Click me!"><p>Check votes you have voted</p></button>
+            </a>
+        </div>
+        <div class="cell">
+            <button class="account-btn" onclick="toggleVisible('change_password')"><p>Change password</p></button>
+            <div id="change_password">
+                <p>This will have password changing window / form</p>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

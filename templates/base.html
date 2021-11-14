@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}VoteApp</title>
+    {% block import_css %}{% endblock %}
+    <link href="{{url_for('static', filename='css/boostrap.css' )}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/index.css' )}}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.svg') }}">
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <header id="icul" class="header-banner">
+      <div id="iert" class="container-width">
+        <div class="logo-container">
+          <a class="logo" href="/">VoteApp</a>
+        </div>
+        <nav class="menu" id="header-links-nav">
+            <div>
+              <a href="/create" title="Create vote" class="header-btn">CREATE VOTE</a>
+              <a href="/votes" title="Votes" class="header-btn">VOTES</a>
+              {% if current_user.is_authenticated %}
+                <a href="/logout" title="Log out" class="header-btn">LOG OUT</a>
+                <a href="/account" title="Account" class="header-btn">{{ current_user.username }}</a>
+              {% else %}
+                <a href="/sign-up" title="Sing Up" class="header-btn">SIGN UP</a>
+                <a href="/login" title="Login" class="header-btn">LOGIN</a>
+              {% endif %}
+            </div>
+
+            <select id="menu1">
+                <option value="" selected="selected" style="text-align:center;">☰</option>
+
+                <option value="/create">create</option>
+                <option value="/votes">votes</option>
+                {% if current_user.is_authenticated %}
+                <option value="/logout">log out</option>
+                <option value="/account">{{ current_user.username }}</option>
+                {% else %}
+                <option value="/sign-up">sign up</option>
+                <option value="/login">login</option>
+                {% endif %}
+            </select>
+
+        </nav>
+        <div class="clearfix">
+        </div>
+      </div>
+    </header>
+    <!--  Flash messages  -->
+     {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div id="alert1" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true" onclick="remove('alert1')">&times;</span>
+
+      </button>
+    </div>
+    {% else %}
+    <div id="alert2" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true" onclick="remove('alert2')">&times;</span>
+      </button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+    <!--  SCRIPT  -->
+    <script type="text/javascript">
+
+        // mobile menu //
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          window.open( this.options[ this.selectedIndex ].value, '_self');
+     };
+
+        // remove flash notification //
+     function remove(element)
+    {
+    var element = document.getElementById(element);
+    element.remove();
+    }
+    </script>
+    {% block content %}{% endblock %}
+
+    <!--
+    SOURCES
+        desing - grapesjs.com
+        404 - https://codepen.io/Tibixx/pen/GRKmppz
+    -->
+  </body>
+</html>

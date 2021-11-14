@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Create - {% endblock %}
+{% block content %}
+<div class="formcontent" id="form-content">
+
+  <div id="iw5nr">Creating Vote</div>
+  <br/>
+  {% if user.is_anonymous%}
+  <p class="user-text">You are using VoteApp as guest. Sing up in order to save vote and show your username as creator.</p>
+  {% else %}
+  <p class="user-text">You are signed in. Your username will be shown as creator of the vote.</p>
+  {% endif %}
+  <script>
+    var num = 4
+    $(document).ready(function () {
+
+        $(document).on("change",".input-last",function(){
+            var allHaveText;
+            var parentDiv = $(this).closest("input");
+            emptyInputs=parentDiv.find("input[type=text]").filter(function () {
+                return !this.value;
+            });
+            if(emptyInputs.length==0)
+            {
+                var bg = document.getElementById('form-content');
+                bg.style.height =  "110vh";
+                var newDiv = parentDiv.clone()
+                console.log(newDiv)
+                console.log(newDiv[0])
+                num = num + 1
+                newDiv[0].placeholder = "option " + num + ". Leave blank (or this text) if u don't want to use. Use maximally 10 option, more will not be included."
+                newDiv[0].name = "ans" + (num - 1)
+                newDiv[0].value = ""
+                // parent editing is currently not working
+                //parentDiv[0].class = "input"
+                //console.log(parentDiv[0].placeholder)
+                const formGroup = document.getElementsByClassName('form-group')[0]
+                newGroup = newDiv.appendTo(".form-group");
+                newGroup.find("input[type=text]").each(function(){
+                    $(this).val("");
+                });
+            }
+        });
+
+    });
+    function toggleVisible(className) {
+      var x = document.getElementById(className);
+      var bg = document.getElementById('form-content');
+      if (x.style.display === "block") {
+        x.style.display = "none";
+        bg.style.height = "93vh";
+      } else {
+        x.style.display = "block";
+        bg.style.height =  "150vh";
+      }
+    }
+  </script>
+  <form method="post" class="form">
+
+    <div class="form-group-question">
+      <label class="create-label-question" >Question</label>
+      <input type="text" placeholder="Type your question here" class="input" name="question" required />
+    </div>
+
+    <label class="create-label" >Options / Answers</label>
+    <div class="form-group">
+      <div class="answer-label">
+        <input type="text" placeholder="option 1" class="input" name="ans0" required/>
+      </div>
+      <div class="answer-label">
+        <input type="text" placeholder="option 2" class="input" name="ans1" required/>
+      </div>
+      <div class="answer-label">
+        <input type="text" placeholder="option 3" class="input" name="ans2" />
+      </div>
+      <div class="answer-label">
+        <input type="text" placeholder="option 4" class="input-last" name="ans3" />
+      </div>
+    </div>
+
+    <label class="create-label">Allow only authenticated users to vote
+      <input type="checkbox" name="auth_required"/>
+      <span class="slider round"></span>
+    </label>
+
+    <div title="Submit" class="form-group-question">
+      <button type="submit" class="button">Create Vote</button>
+    </div>
+
+  </form>
+</div>
+{% endblock %}
