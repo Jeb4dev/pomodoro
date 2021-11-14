@@ -353,7 +353,6 @@ window.onclick = function(event) {
 
 function defineMusic() {
     if (document.getElementById("custom-music-id").value) {
-    console.log(document.getElementById("custom-music-id").value)
     youtube_video_id = document.getElementById("custom-music-id").value;
     playNewVideo();
     }
