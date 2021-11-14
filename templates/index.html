@@ -155,12 +155,17 @@
 
           <div id="music">
             <div id="musicDropdown" class="dropdown-content">
-              <a href="#" onclick="play_music('hGIW2fDb0jg', 'change1')" id="change1">Coding music</a>
-              <a href="#" onclick="play_music('lE6RYpe9IT0', 'change2')" id="change2">Nature sounds</a>
-              <a href="#" onclick="play_music('sjkrrmBnpGE', 'change3')" id="change3">Studying music</a>
-              <a href="#" onclick="play_music('b3uIKzgcDxo', 'change4')" id="change4">Killer tomatoes</a>
-              <a href="#" onclick="play_music('none', 'change5')" id="change5">None</a>
-              <a href="#" onclick="play_music('custom', 'change6')" id="change6">Custom</a>
+              <a href="#" onclick="play_music('hGIW2fDb0jg', 'change1'); toggleMusicDropdown();" id="change1">Coding music</a>
+              <a href="#" onclick="play_music('sjkrrmBnpGE', 'change3'); toggleMusicDropdown();" id="change3">Studying</a>
+              <a href="#" onclick="play_music('jgpJVI3tDbY', 'change7'); toggleMusicDropdown();" id="change7">Piano</a>
+              <a href="#" onclick="play_music('neV3EPgvZ3g', 'change8'); toggleMusicDropdown();" id="change8">Jazz</a>
+              <a href="#" onclick="play_music('lE6RYpe9IT0', 'change2'); toggleMusicDropdown();" id="change2">Nature</a>
+              <a href="#" onclick="play_music('vPhg6sc1Mk4', 'change10'); toggleMusicDropdown();" id="change10">Ocean</a>
+              <a href="#" onclick="play_music('co7KgV2edvI', 'change9'); toggleMusicDropdown();" id="change9">Airplane</a>
+              <a href="#" onclick="play_music('TA4mhuFF-Go', 'change11'); toggleMusicDropdown();" id="change11">Train</a>
+              <a href="#" onclick="play_music('b3uIKzgcDxo', 'change4'); toggleMusicDropdown();" id="change4">Killer tomatoes</a>
+              <a href="#" onclick="play_music('none', 'change5'); toggleMusicDropdown();" id="change5">None</a>
+              <a href="#" onclick="play_music('custom', 'change6'); toggleMusicDropdown(); openModule('music-module');" id="change6">Custom</a>
             </div>
             <button class="control-btn" id="control-btn" onclick="toggleMusicDropdown()" title="select music">Studying music</button>
           </div>
@@ -171,7 +176,7 @@
 
     <div id="login-module" class="modal">
 
-      <form class="modal-content animate" action="/action_page.php" method="post">
+      <form class="modal-content animate" onsubmit="alert('This function does not exist.')">
         <div class="imgcontainer">
           <div class="title-row">
             <div class="cell">
@@ -206,7 +211,7 @@
     </div>
     <div id="register-module" class="modal">
 
-      <form class="modal-content animate" action="/action_page.php" method="post">
+      <form class="modal-content animate" onsubmit="alert('This function does not exist.')">
         <div class="imgcontainer">
           <div class="title-row">
             <div class="cell">
@@ -232,7 +237,7 @@
     </div>
     <div id="upload-module" class="modal">
 
-      <form class="modal-content animate" action="/action_page.php" method="post">
+      <form class="modal-content animate" onsubmit="return false;">
         <div class="imgcontainer">
           <div class="title-row">
             <div class="cell">
@@ -246,43 +251,43 @@
 
         <div class="container">
           <label class="input-title"><b>Image url</b></label>
-          <input type="url" placeholder="Enter image url" name="custom-bg-img-url" required>
+          <input type="url" placeholder="Enter image url" name="custom-bg-img-url" id="custom-bg-img-url" required>
 
-          <button type="submit" class="login-btn">Upload</button>
+          <button type="submit" onclick="uploadBackground()" class="login-btn">Upload</button>
         </div>
       </form>
     </div>
     <div id="customize-module" class="modal">
 
-      <form class="modal-content animate" action="/action_page.php" method="post">
+      <form class="modal-content animate" onsubmit="return false;">
         <div class="imgcontainer">
           <div class="title-row">
             <div class="cell">
               <span class="form-title">Customize intervals</span>
             </div>
             <div class="cell">
-              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+              <span onclick="closeModule();" class="close" title="Close">&times;</span>
             </div>
           </div>
         </div>
 
         <div class="container">
           <label class="input-title"><b>Pomodoro</b></label>
-          <input type="number" min="1" max="120" value="25" name="pomodoro-time" required>
+          <input type="number" min="0" max="120" value="25" name="pomodoro-time" id="pomodoro-time_input" required>
 
           <label class="input-title"><b>Short break</b></label>
-          <input type="number" min="1" max="120" value="5" name="short-break" required>
+          <input type="number" min="1" max="120" value="5" name="short-break" id="short-break_input" required>
 
           <label class="input-title"><b>Long break</b></label>
-          <input type="number" min="1" max="120" value="15" name="long-break" required>
+          <input type="number" min="1" max="120" value="15" name="long-break" id="long-break_input" required>
 
-          <button type="submit" class="login-btn">Confirm</button>
+          <button type="submit" onclick="closeModule(); defineIntervals();" class="login-btn">Confirm</button>
         </div>
       </form>
     </div>
     <div id="music-module" class="modal">
 
-      <form class="modal-content animate" onsubmit="return defineMusic();" >
+      <form class="modal-content animate" onsubmit="return false;" >
         <div class="imgcontainer">
           <div class="title-row">
             <div class="cell">
@@ -298,16 +303,19 @@
           <label class="input-title"><b>Music volume</b></label>
           <input type="number" min="0" max="100" value="100" id="music-volume" required>
 
+          <label class="input-title"><b>Time end volume</b></label>
+          <input type="number" min="0" max="100" value="20" id="timer-volume" required>
+
           <label class="input-title"><b>Custom music</b></label>
           <input type="text" placeholder="Enter youtube video id" id="custom-music-id">
 
-          <button type="submit" class="login-btn">Confirm</button>
+          <button type="submit" onclick="closeModule();defineMusic()" class="login-btn">Confirm</button>
         </div>
       </form>
     </div>
     <div id="credits-module" class="modal">
 
-      <form class="modal-content animate" action="/action_page.php" method="post"  style="width:30%;">
+      <form class="modal-content animate" onsubmit="alert('This function does not exist.')"  style="width:30%;">
         <div class="imgcontainer">
           <div class="title-row">
             <div class="cell">
