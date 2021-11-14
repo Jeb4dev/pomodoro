@@ -13,6 +13,6 @@ def create_app():
     # Error Management
     @app.errorhandler(404)
     def page_not_found(error):
-        return render_template('error_template.html'), 404
+        return render_template('index.html'), 404
 
     return app
