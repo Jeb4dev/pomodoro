@@ -9,4 +9,5 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET'])
 def home():
     if request.method == "GET":
-        return render_template("index.html")
+        return render_template("mobile.html")
+        # return render_template("index.html")
