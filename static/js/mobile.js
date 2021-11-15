@@ -277,9 +277,6 @@ function play_music(video_id, id_) {
     youtube_video_id = video_id;
     playNewVideo();
     }
-    var selected = document.getElementById(id_);
-    var musicBnt = document.getElementById("control-btn");
-    musicBnt.innerHTML = selected.innerHTML
 }
 
 

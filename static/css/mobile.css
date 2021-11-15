@@ -229,32 +229,22 @@ body {
     font-family:Courier New, Courier, monospace;
     font-weight:200;
 }
-
+.controls{
+  margin: auto;
+  width: 38vh;
+}
 /*  CONTROLS    */
 .control-btn-circle{
-  margin:0 30px 0 30px;
+  margin:0 1vh 0 1vh;
   display:inline-block;
   position:relative;
   float:left;
   top:10vh;
-  height:40px;
-  width:40px;
+  height:10vh;
+  width:10vh;
   border-radius:100% 100% 100% 100%;
   border:0px solid black;
-  font-size:16px;
-  opacity:0.8;
-}
-.control-btn{
-  margin:0 30px 0 30px;
-  display:inline-block;
-  position:relative;
-  float:left;
-  top:10vh;
-  height:40px;
-  width:200px;
-  border-radius:50px 50px 50px 50px;
-  border:0px solid black;
-  font-size:16px;
+  font-size:5vh;
   opacity:0.8;
 }
 
@@ -263,9 +253,12 @@ body {
   position: absolute;
   background-color: #f1f1f1;
   min-width: 160px;
+  left:60%;
+  top: 15vh;
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  font-size:2vh;
 }
 
 .dropdown-content a {
@@ -275,7 +268,7 @@ body {
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:active {background-color: #ddd;}
 
 .show {display: block;}
 
@@ -291,6 +284,7 @@ body {
   background-size:auto;
   font-size:1.8vh;
 }
+
 #img{
   /* SOURCE https://www.seekpng.com/ipng/u2t4o0a9a9r5e6w7_guacamole-apple-tomato-vegetable-clip-art-cartoon-tomato/ */
   /*background-image:url('https://www.seekpng.com/png/full/897-8974652_guacamole-png.png');*/
@@ -398,9 +392,10 @@ img.avatar {
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  margin: 20vh auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
   border: 1px solid #888;
-  width: 50%; /* Could be more or less, depending on screen size */
+  width: 100%; /* Could be more or less, depending on screen size */
+  font-size:1.8vh;
 }
 
 /* The Close Button (x) */
