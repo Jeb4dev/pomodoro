@@ -67,12 +67,18 @@ function togglesSideBarLeft() {
 //    }
 //}
 
-var timerAdd = 60000 * 25 + 1000
+var pomodoro_length = 25;
+var short_break_length = 5;
+var long_break_length = 15;
+
+var timerAdd = 60000 * pomodoro_length + 1000;
 var now = new Date().getTime();
 var countDownDate = new Date().getTime() + timerAdd;
 var reset = false;
 var pause = true;
-var playing = false
+var playing = false;
+var music_volume = 100;
+var timer_volume = 0.2;
 youtube_video_id = 'sjkrrmBnpGE'
 
 function selectTimer(active) {
@@ -81,11 +87,11 @@ function selectTimer(active) {
     var longBreak = document.getElementById('long-break');
 
     if (active == "pomodoro") {
-      pomodoro.className = "header-btn-active"
-      shortBreak.className = "header-btn"
-      longBreak.className = "header-btn"
+      pomodoro.className = "header-btn-active";
+      shortBreak.className = "header-btn";
+      longBreak.className = "header-btn";
 
-      timerAdd = 60000 * 25 + 1000
+      timerAdd = 60000 * pomodoro_length + 1000;
       now = new Date().getTime();
       countDownDate = new Date().getTime() + timerAdd;
       reset = true;
@@ -93,11 +99,11 @@ function selectTimer(active) {
 
     }
     else if (active == "short-break"){
-      pomodoro.className = "header-btn"
-      shortBreak.className = "header-btn-active"
-      longBreak.className = "header-btn"
+      pomodoro.className = "header-btn";
+      shortBreak.className = "header-btn-active";
+      longBreak.className = "header-btn";
 
-      timerAdd = 60000 * 5 + 1000
+      timerAdd = 60000 * short_break_length + 1000;
       now = new Date().getTime();
       countDownDate = new Date().getTime() + timerAdd;
       reset = true;
@@ -108,7 +114,7 @@ function selectTimer(active) {
       shortBreak.className = "header-btn"
       longBreak.className = "header-btn-active"
 
-      timerAdd = 60000 * 15 + 1000
+      timerAdd = 60000 * long_break_length + 1000
       now = new Date().getTime();
       countDownDate = new Date().getTime() + timerAdd;
       reset = true;
@@ -135,14 +141,12 @@ function play() {
  pause = !pause
  if (!pause) {
         player.playVideo();
-        console.log("play")
 
         PlayBtn.style.display = "none";
         PauseBtn.style.display = "block";
 
     } else {
         player.pauseVideo();
-        console.log("pause")
         PlayBtn.style.display = "block";
         PauseBtn.style.display = "none";
     }
@@ -196,14 +200,15 @@ var x = setInterval(function() {
         playing = true
         var a = new Audio("/static/audio/world_clear.wav");
         a.play();
-        if (timerAdd >= 60000 * 25 + 1100) {
-              timerAdd = 60000 * 5
+        a.volume = timer_volume;
+        if (timerAdd >= 60000 * pomodoro_length + 1100) {
+              timerAdd = 60000 * short_break_length
               now = new Date().getTime();
               countDownDate = new Date().getTime() + timerAdd;
               reset = true;
               pause = true;
         } else {
-          timerAdd = 60000 * 25 + 1100
+          timerAdd = 60000 * pomodoro_length + 1100
           now = new Date().getTime();
           countDownDate = new Date().getTime() + timerAdd;
           reset = true;
@@ -309,6 +314,9 @@ player = new YT.Player('player', {
 function onPlayerReady(event) {
 event.target.pauseVideo();
 }
+function changeVolume() {
+player.setVolume(music_volume);
+}
 function stopVideo() {
 player.stopVideo();
 }
@@ -328,6 +336,10 @@ var modal;
 function openModule(moduleId) {
   modal = document.getElementById(moduleId);
   modal.style.display='block';
+
+  var short_break = document.getElementById("short-break_input");
+  short_break.value = short_break_length
+
 }
 function closeModule() {
   modal.style.display='none';
@@ -337,12 +349,24 @@ window.onclick = function(event) {
   if (event.target == modal) {
       modal.style.display = "none";
   }
-  if (event.target == document.getElementById("main-template")) {
-      document.getElementById("musicDropdown").classList.toggle("show");
-  }
 }
 
 function defineMusic() {
+    if (document.getElementById("custom-music-id").value) {
     youtube_video_id = document.getElementById("custom-music-id").value;
     playNewVideo();
+    }
+    music_volume = document.getElementById("music-volume").value;
+    timer_volume = (document.getElementById("timer-volume").value / 100);
+    changeVolume();
+}
+
+function defineIntervals() {
+    pomodoro_length = document.getElementById("pomodoro-time_input").value;
+    short_break_length = document.getElementById("short-break_input").value;
+    long_break_length = document.getElementById("long-break_input").value;
+}
+function uploadBackground() {
+    custom_url = document.getElementById("custom-bg-img-url").value;
+    next_img(custom_url);
 }
