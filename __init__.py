@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, redirect, url_for
 from os import environ
 
 
@@ -13,6 +13,6 @@ def create_app():
     # Error Management
     @app.errorhandler(404)
     def page_not_found(error):
-        return render_template('index.html'), 404
+        return redirect(url_for('views.home'))
 
     return app

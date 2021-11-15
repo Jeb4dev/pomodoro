@@ -2,7 +2,7 @@ function togglesSideBarRight() {
     var right = document.getElementById('right');
     var rightNav = document.getElementById('sideNavRight');
 
-    if (right.style.flexBasis == "15%") {
+    if (right.style.flexBasis == "45%") {
       setTimeout(function () {
             right.style.flexBasis = "0%";
             rightNav.style.width = "0%";
@@ -17,8 +17,8 @@ function togglesSideBarRight() {
         rightNav.style.display = "block";
         right.style.visibility = "visible";
         setTimeout(function () {
-          rightNav.style.width = "15%";
-          right.style.flexBasis = "15%";
+          rightNav.style.width = "45%";
+          right.style.flexBasis = "45%";
         }, 400);
       rightNav.style.animation = "rightToggleOn 0.5s";
       right.style.animation = "rightToggleOn2 0.5s";
@@ -27,7 +27,7 @@ function togglesSideBarRight() {
 function togglesSideBarLeft() {
     var left = document.getElementById('left');
     var leftNav = document.getElementById('sideNavLeft');
-    if (left.style.flexBasis == "20%") {
+    if (left.style.flexBasis == "45%") {
       setTimeout(function () {
             left.style.flexBasis = "0%";
             left.style.visibility = "hidden";
@@ -40,8 +40,8 @@ function togglesSideBarLeft() {
         leftNav.style.display = "block";
         left.style.visibility = "visible";
         setTimeout(function () {
-          leftNav.style.width = "20%";
-          left.style.flexBasis = "20%";
+          leftNav.style.width = "45%";
+          left.style.flexBasis = "45%";
         }, 400);
       leftNav.style.animation = "leftToggleOn 0.5s";
       left.style.animation = "leftToggleOn2 0.5s";
@@ -277,9 +277,6 @@ function play_music(video_id, id_) {
     youtube_video_id = video_id;
     playNewVideo();
     }
-    var selected = document.getElementById(id_);
-    var musicBnt = document.getElementById("control-btn");
-    musicBnt.innerHTML = selected.innerHTML
 }
 
 

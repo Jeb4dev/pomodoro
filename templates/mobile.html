@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pomodoro - For Productivity</title>
+  <link href="{{url_for('static', filename='css/mobile.css' )}}" rel="stylesheet">
+  <!--  Import favicon  -->
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.png') }}">
+  <!--  Import icon pack  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!--  Import JS [function togglesSideBarLeft()] -->
+  <script src="/static/js/mobile.js"></script>
+  <!--  youtube-->
+  <script src="http://www.youtube.com/player_api"></script>
+</head>
+<body onload="selectTimer('pomodoro');">
+<div id="player" style="position: absolute; top: -9999px; left: -9999px;"></div>
+  <div id="main-template">
+    <div class="row">
+      <div class="cell" id="main">
+        <div class="row">
+          <div class="cell">
+            <div>
+              <button class="header-btn" id="pomodoro" onclick="selectTimer('pomodoro');">Pomodoro</button>
+            </div>
+          </div>
+          <div class="cell">
+            <div>
+              <button class="header-btn" id="short-break" onclick="selectTimer('short-break');">Short break</button>
+            </div>
+          </div>
+          <div class="cell">
+            <div>
+              <button class="header-btn" id="long-break" onclick="selectTimer('long-break')">Long break</button>
+            </div>
+          </div>
+          <div class="cell" style="flex-basis:40%;">
+            <div>
+              <button class="header-btn" id="header-bars"
+                      onclick='document.getElementById("account-settings").classList.toggle("show")'>
+                      <i class="fa fa-bars"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="account-settings" id="account-settings">
+          <button class="header-btn"  onclick="openModule('register-module')">
+            <i class="fa fa-user"></i></button>
+          <br>
+          <button class="header-btn" onclick="togglesSideBarRight()">
+            <i class="fa fa-cog"></i></button>
+          <br>
+          <button class="header-btn" onclick="togglesSideBarLeft()">
+            <i class="fa fa-tasks"></i></button>
+        </div>
+      </div>
+    <div class="cell" id="left">
+      <aside class="sideNavLeft" id="sideNavLeft">
+        <div class="left-nav">
+          <div class="left-nav-title">Tasks</div>
+          <br>
+          <a href="#" onclick="task('task0')">
+            <div class="left-nav-content">
+              <div id="task0" class="task">
+                Fix padding
+              </div>
+            </div>
+          </a>
+          <a href="#" onclick="task('task1')">
+            <div class="left-nav-content">
+              <div id="task1" class="task-done">
+                Check new Issues
+              </div>
+            </div>
+          </a>
+          <div class="left-nav-hr"><hr></div>
+
+          <div class="left-nav-title">in Session</div>
+
+          <br>
+          <a href="#">
+            <div class="left-nav-content">
+              <div id="friend0" class="friend">
+                Mark Zuckerberg
+              </div>
+            </div>
+          </a>
+          <a href="#">
+            <div class="left-nav-content">
+              <div id="friend1" class="friend">
+                Steve Jobs
+              </div>
+            </div>
+          </a>
+        </div>
+      </aside>
+    </div>
+    <div class="cell" id="right">
+      <aside class="sideNavRight" id="sideNavRight">
+        <div class="right-nav">
+          <a href="#" onclick="next_img();">   <div class="right-nav-content">Change background</div>  </a>
+          <a href="#">   <div class="right-nav-content" onclick="openModule('upload-module')">Upload background</div>  </a>
+          <div class="right-nav-hr"><hr></div>
+          <a href="#">   <div class="right-nav-content" onclick="openModule('customize-module')">Customize timer</div>  </a>
+          <a href="#">   <div class="right-nav-content" onclick="openModule('music-module')">Music settings</div> </a>
+          <div class="right-nav-hr"><hr></div>
+          <a href="https://github.com/JesperKauppinen/pomodoro" target="_blank"><div class="right-nav-content" title="Open the project Github page on the new tab.">Github</div> </a>
+          <a href="#">   <div class="right-nav-content" onclick="openModule('credits-module')">Credits</div>  </a>
+        </div>
+      </aside>
+    </div>
+    <p id="countdown">25:00</p>
+    <div class="controls">
+      <div id="play">
+        <button onclick="play();" class="control-btn-circle" id="PlayBtn" title="pause/play timer"><i class="fa fa-play-circle"></i></button>
+        <button onclick="play();" class="control-btn-circle" id="PauseBtn" title="pause/play timer" style="display:none;"><i class="fa fa-pause-circle"></i></button>
+      </div>
+
+      <div id="reset">
+        <button onclick="resetTime();" class="control-btn-circle" title="reset timer"><i class="fa fa-history"></i></button>
+      </div>
+
+      <div id="music">
+        <div id="musicDropdown" class="dropdown-content">
+          <a href="#" onclick="play_music('hGIW2fDb0jg', 'change1'); toggleMusicDropdown();" id="change1">Coding music</a>
+          <a href="#" onclick="play_music('sjkrrmBnpGE', 'change3'); toggleMusicDropdown();" id="change3">Studying</a>
+          <a href="#" onclick="play_music('jgpJVI3tDbY', 'change7'); toggleMusicDropdown();" id="change7">Piano</a>
+          <a href="#" onclick="play_music('neV3EPgvZ3g', 'change8'); toggleMusicDropdown();" id="change8">Jazz</a>
+          <a href="#" onclick="play_music('lE6RYpe9IT0', 'change2'); toggleMusicDropdown();" id="change2">Nature</a>
+          <a href="#" onclick="play_music('vPhg6sc1Mk4', 'change10'); toggleMusicDropdown();" id="change10">Ocean</a>
+          <a href="#" onclick="play_music('co7KgV2edvI', 'change9'); toggleMusicDropdown();" id="change9">Airplane</a>
+          <a href="#" onclick="play_music('TA4mhuFF-Go', 'change11'); toggleMusicDropdown();" id="change11">Train</a>
+          <a href="#" onclick="play_music('b3uIKzgcDxo', 'change4'); toggleMusicDropdown();" id="change4">Killer tomatoes</a>
+          <a href="#" onclick="play_music('none', 'change5'); toggleMusicDropdown();" id="change5">None</a>
+          <a href="#" onclick="play_music('custom', 'change6'); toggleMusicDropdown(); openModule('music-module');" id="change6">Custom</a>
+        </div>
+        <button class="control-btn-circle" id="control-btn" onclick="toggleMusicDropdown()" title="select music"><i class="fa fa-music"></i></button>
+      </div>
+    </div>
+
+    <div id="login-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="alert('This function does not exist.')">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Login</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required>
+
+          <label class="input-title"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+          <div class="psw-container">
+            <div class="title-row">
+              <div class="cell">
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+              </div>
+              <div class="cell">
+                <span class="pswd">Forgot <a href="#">password?</a></span>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="login-btn">Login</button>
+        </div>
+      </form>
+    </div>
+    <div id="register-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="alert('This function does not exist.')">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Register</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required>
+
+          <label class="input-title"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+          <input type="password" placeholder="Confirm Password" name="psw" required>
+
+          <button type="submit" class="login-btn">Register</button>
+        </div>
+      </form>
+    </div>
+    <div id="upload-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="return false;">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Upload Custom Background Image</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Image url</b></label>
+          <input type="url" placeholder="Enter image url" name="custom-bg-img-url" id="custom-bg-img-url" required>
+
+          <button type="submit" onclick="uploadBackground()" class="login-btn">Upload</button>
+        </div>
+      </form>
+    </div>
+    <div id="customize-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="return false;">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Customize intervals</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule();" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Pomodoro</b></label>
+          <input type="number" min="0" max="120" value="25" name="pomodoro-time" id="pomodoro-time_input" required>
+
+          <label class="input-title"><b>Short break</b></label>
+          <input type="number" min="1" max="120" value="5" name="short-break" id="short-break_input" required>
+
+          <label class="input-title"><b>Long break</b></label>
+          <input type="number" min="1" max="120" value="15" name="long-break" id="long-break_input" required>
+
+          <button type="submit" onclick="closeModule(); defineIntervals();" class="login-btn">Confirm</button>
+        </div>
+      </form>
+    </div>
+    <div id="music-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="return false;" >
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Music setting</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Music volume</b></label>
+          <input type="number" min="0" max="100" value="100" id="music-volume" required>
+
+          <label class="input-title"><b>Time end volume</b></label>
+          <input type="number" min="0" max="100" value="20" id="timer-volume" required>
+
+          <label class="input-title"><b>Custom music</b></label>
+          <input type="text" placeholder="Enter youtube video id" id="custom-music-id">
+
+          <button type="submit" onclick="closeModule();defineMusic()" class="login-btn">Confirm</button>
+        </div>
+      </form>
+    </div>
+    <div id="credits-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="return false"  style="width:80%;">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Credits</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Music</b></label><br>
+          <label class="input-title"><b><a href="https://themushroomkingdom.net/media/smw/wav" style="text-decoration:none;" target="_blank">- Session end sound</a></b></label><br>
+          <label class="input-title"><b><a href="https://www.youtube.com/" style="text-decoration:none;" target="_blank">- Background music</a> youtube embed iframe</b></label><br>
+
+          <br><label class="input-title"><b>Pictures</b></label><br>
+          <label class="input-title"><b><a href="https://www.seekpng.com/ipng/u2t4o0a9a9r5e6w7_guacamole-apple-tomato-vegetable-clip-art-cartoon-tomato/"
+                                           style="text-decoration:none;" target="_blank">- Cartoon tomato</a></b></label><br>
+          <label class="input-title"><b><a href="https://www.pexels.com/" style="text-decoration:none;" target="_blank">- Background images</a></b></label><br>
+        </div>
+      </form>
+    </div>
+
+    </div>
+  </div>
+  <div class="row" id="second-template">
+    <div id="img">
+      <div class="cell" id="second-template-div">
+        <div class="row">
+          <div class="cell">
+            <h1 class="heading">What is Pomodoro?
+              <br/>
+            </h1>
+            <p class="paragraph">The Pomodoro Technique is a time management method, designed to increase your productivity and creativity.
+              It uses a timer to break work into intervals, traditionally 25 minutes in length, separated by short breaks.
+              Each interval is known as a pomodoro, from the Italian word for 'tomato'.
+            </p>
+          </div>
+        </div>
+        <div class="row" id="i3pfa">
+          <div class="cell" id="ih06h">
+            <h1 class="heading">Features?<br/></h1>
+            <p class="paragraph">
+              - 25 min timer for work.<br/>
+              - 5 min timer for short break.<br/>
+              - 15 min timer for long break.<br/>
+              - Customizable timer for work and breaks.<br/>
+              - Pause and reset buttons.<br/>
+              <br/>
+              - Multiple background images.<br/>
+              - Upload custom background image.<br/>
+              <br/>
+              - There are several choice of soundtracks to maximize concentration.<br/>
+              - Sound indicating the end of session.<br/>
+              - Ability to change music volume.<br/>
+              - Play custom musics with YouTube embed videoID<br/>
+              <br/>
+            </p>
+            <h1 class="heading" id="iza8c">Future features<br/></h1>
+            <p class="paragraph">
+              - List your tasks and cross out them when you are ready.<br/>
+              - Share your session with others and let them join your session.<br/>
+              - Scoreboard of top "Pomodorors".<br/>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
