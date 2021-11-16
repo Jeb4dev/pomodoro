@@ -1,0 +1,77 @@
+/*  Source https://github.com/MLaritz/Vanilla-Notify/blob/master/dist/vanilla-notify.css*/
+.vnotify-container {
+  position: fixed;}
+
+.vnotify-container.vn-top-right {
+top: 5vh; }
+
+.vnotify-container.vn-bottom-right {
+bottom: 10px;
+right: 10px; }
+
+.vnotify-container .vn-close {
+position: absolute;
+top: 17px;
+right: 10px;
+width: 4vh;
+height: 4vh;
+padding: 10px;
+margin-right: 17px;
+cursor: pointer; }
+
+.vnotify-container .vn-close:before, .vnotify-container .vn-close:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  height: 2px;
+  background: #fff; }
+
+.vnotify-container .vn-close:before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg); }
+
+.vnotify-container .vn-close:after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  transform: rotate(-45deg); }
+
+.vnotify-item {
+  min-height: 6vh;
+  min-width: 100vw;
+  padding: 1vh;
+  padding-right: 100px;
+  font-size:1.8vh;
+  position: relative;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px;
+  animation-play-state:running;
+  animation: fade 10s forwards;}
+
+.vnotify-title {
+  font-weight: bold; }
+
+.vnotify-info {
+  background: #3498db;
+  color: #fff; }
+
+.vnotify-success {
+  background: #2ecc71;
+  color: #fff; }
+
+.vnotify-error {
+  background: #e74c3c;
+  color: #fff; }
+
+.vnotify-warning {
+  background: #f39c12;
+  color: #fff; }
+
+.vnotify-notify {
+  background: #333;
+  color: #fff; }
+
+/*# sourceMappingURL=vanilla-notify.css.map */

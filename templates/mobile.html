@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Pomodoro - For Productivity</title>
   <link href="{{url_for('static', filename='css/mobile.css' )}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='css/mobile-notifications.css' )}}" rel="stylesheet">
   <!--  Import favicon  -->
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.png') }}">
   <!--  Import icon pack  -->
@@ -112,6 +113,20 @@
         </div>
       </aside>
     </div>
+
+    <!--    Start of notifications    -->
+    <div class="vnotify-container vn-top-right">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for i in range(messages|length) %}
+        <div class="vnotify-item vnotify-{{ messages[i][0] }}" style="display: block;" id="alert{{i}}">
+          <div class="vnotify-text">{{ messages[i][1] }}</div>
+          <span class="vn-close" onclick="document.getElementById('alert{{i}}').remove()"></span>
+        </div>
+    {% endfor %} {% endif %} {% endwith %}
+    </div>
+<!--    End of notifications    -->
+
     <p id="countdown">25:00</p>
     <div class="controls">
       <div id="play">
