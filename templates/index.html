@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <title>Pomodoro - For Productivity</title>
   <link href="{{url_for('static', filename='css/index.css' )}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='css/notifications.css' )}}" rel="stylesheet">
   <!--  Import favicon  -->
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.png') }}">
   <!--  Import icon pack  -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!--  Import JS [function togglesSideBarLeft()] -->
+  <!--  Import JS -->
   <script src="/static/js/index.js"></script>
   <!--  youtube-->
   <script src="http://www.youtube.com/player_api"></script>
@@ -139,6 +140,19 @@
         </aside>
       </div>
     </div>
+
+<!--    Start of notifications    -->
+        <div class="vnotify-container vn-top-right">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for i in range(messages|length) %}
+            <div class="vnotify-item vnotify-{{ messages[i][0] }}" style="display: block;" id="alert{{i}}">
+              <div class="vnotify-text">{{ messages[i][1] }}</div>
+              <span class="vn-close" onclick="document.getElementById('alert{{i}}').remove()"></span>
+            </div>
+        {% endfor %} {% endif %} {% endwith %}
+        </div>
+<!--    End of notifications    -->
     <p id="countdown">25:00</p>
     <div class="row">
       <div class="cell"></div>
@@ -174,6 +188,7 @@
       <div class="cell"></div>
     </div>
 
+<!--  Start of modules    -->
     <div id="login-module" class="modal">
 
       <form class="modal-content animate" onsubmit="alert('This function does not exist.')">
@@ -339,9 +354,10 @@
         </div>
       </form>
     </div>
+<!--  End of modules    -->
 
-    </div>
-    <div class="row" id="second-template">
+  </div>
+  <div class="row" id="second-template">
     <div id="img">
       <div class="cell" id="second-template-div">
         <div class="row">
