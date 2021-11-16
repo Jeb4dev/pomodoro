@@ -17,7 +17,7 @@ def home():
         post_type = request.form.get('post-type')
 
         # Check post request type
-        # Check if post request was about registering
+        # Check if post request is about registering
         if post_type == "register":
             # get values
             username = request.form.get('uname')
@@ -31,6 +31,18 @@ def home():
                 flash('Passwords don\'t match.', category='error')
             else:
                 flash(f"Hello, {username}. Registering was successful", "success")
+
+        # Check if post request is about logging in
+        elif post_type == "login":
+            # get values
+            username = request.form.get('uname')
+            password = request.form.get('psw')
+            if password != "right-passwd":
+                flash('Password was not correct', category='error')
+            else:
+                flash(f"Hello, {username}. Login was successful", "success")
+
+
         # If post request title was not defined
         elif not post_type:
             flash(f"POST REQUEST TYPE WAS NOT DEFINED", "error")

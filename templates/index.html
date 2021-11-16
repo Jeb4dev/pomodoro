@@ -215,7 +215,10 @@
                 <input type="checkbox" checked="checked" name="remember"> Remember me
               </div>
               <div class="cell">
-                <span class="pswd">Forgot <a href="#">password?</a></span>
+                <span class="pswd">Don't have account yet? <a onclick='
+                                document.getElementById("login-module").style.display = "none";
+                                openModule("register-module");
+                                '>Register</a> instead.</span>
               </div>
             </div>
           </div>
@@ -245,6 +248,22 @@
           <label class="input-title"><b>Password</b></label>
           <input type="password" placeholder="Enter Password" name="psw"  required>
           <input type="password" placeholder="Confirm Password" name="psw2" required>
+
+          <div class="psw-container">
+            <div class="title-row">
+              <div class="cell">
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+              </div>
+              <div class="cell">
+                <span class="pswd">Already have account? <a
+                        onclick='
+                                document.getElementById("register-module").style.display = "none";
+                                openModule("login-module");
+                                '>
+                  Login</a> instead.</span>
+              </div>
+            </div>
+          </div>
 
           <button type="submit" class="login-btn">Register</button>
         </div>
