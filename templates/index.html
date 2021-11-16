@@ -190,8 +190,8 @@
 
 <!--  Start of modules    -->
     <div id="login-module" class="modal">
-
-      <form class="modal-content animate" onsubmit="alert('This function does not exist.')">
+      <form class="modal-content animate" method="post">
+        <input name="post-type" style="visibility:hidden;" value="login">
         <div class="imgcontainer">
           <div class="title-row">
             <div class="cell">
@@ -225,8 +225,8 @@
       </form>
     </div>
     <div id="register-module" class="modal">
-
-      <form class="modal-content animate" onsubmit="alert('This function does not exist.')">
+      <form class="modal-content animate" method="post">
+        <input name="post-type" style="visibility:hidden;" value="register">
         <div class="imgcontainer">
           <div class="title-row">
             <div class="cell">
@@ -240,11 +240,11 @@
 
         <div class="container">
           <label class="input-title"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="uname" required>
+          <input type="text" placeholder="Enter Username" name="uname" maxlength="31" minlength="2" required>
 
           <label class="input-title"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" required>
-          <input type="password" placeholder="Confirm Password" name="psw" required>
+          <input type="password" placeholder="Enter Password" name="psw"  required>
+          <input type="password" placeholder="Confirm Password" name="psw2" required>
 
           <button type="submit" class="login-btn">Register</button>
         </div>
