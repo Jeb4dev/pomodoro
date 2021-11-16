@@ -1,6 +1,7 @@
 # Pomodoro - Time Management Web App
-### _Made with python and flask._
 ## This branch is for **[Heroku]** and should always able to deploy.
+### _Made in Python with Flask_
+
 
 [![N|Solid](https://flask.palletsprojects.com/en/2.0.x/_images/flask-logo.png)](https://flask.palletsprojects.com/en/2.0.x/)
 
