@@ -1,5 +1,4 @@
-# VoteApp
-## _Time management browser application made with Python and Flask_
+# Pomodoro - _Time management browser application made with Python and Flask._
 ## This branch is for **[Heroku]** and should always able to deploy.
 
 [![N|Solid](https://flask.palletsprojects.com/en/2.0.x/_images/flask-logo.png)](https://flask.palletsprojects.com/en/2.0.x/)
