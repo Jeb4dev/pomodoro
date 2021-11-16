@@ -1,5 +1,5 @@
 # VoteApp
-## _Simple time management web app made with python Flask_
+## _Time management browser application made with Python and Flask_
 ## This branch is for **[Heroku]** and should always able to deploy.
 
 [![N|Solid](https://flask.palletsprojects.com/en/2.0.x/_images/flask-logo.png)](https://flask.palletsprojects.com/en/2.0.x/)
