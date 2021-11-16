@@ -57,4 +57,5 @@ def home():
         return render_template("mobile.html")
 
     flash(f"Hello Desktop user, Welcome to use pomodoro clock. Hopefully you have productive time.", "info")
+    flash(f"You are not signed in, your settings will not save.", "info")
     return render_template("index.html")
