@@ -1,9 +1,11 @@
-# VoteApp
-## _Simple time management web app made with python Flask_
+# Pomodoro - Time Management Web App
 ## This branch is for **[Heroku]** and should always able to deploy.
+### _Made in Python with Flask_
+
 
 [![N|Solid](https://flask.palletsprojects.com/en/2.0.x/_images/flask-logo.png)](https://flask.palletsprojects.com/en/2.0.x/)
 
+![image](https://user-images.githubusercontent.com/76889226/141989698-56a3125c-c036-4ee9-a726-acd619797067.png)
 [Live Demo](https://jeb-pomodoro.herokuapp.com/)
 
 Pomodoro is Pomodoro timer for better productivity.
@@ -73,6 +75,7 @@ Give feedback, suggest new features, maybe even create pull request.
 - [Wikipedia] - What is Pomodoro?
 - [Tomato] - Image used on website.
 - [Audio] - Session has ended Notification .
+- [Notifications] - Styling for notifications
 
 
 
@@ -91,4 +94,4 @@ MIT
    
    [Wikipedia]: <https://en.wikipedia.org/wiki/Pomodoro_Technique>
    [Tomato]: <https://www.seekpng.com/ipng/u2t4o0a9a9r5e6w7_guacamole-apple-tomato-vegetable-clip-art-cartoon-tomato/>
-   [Audio]: <https://themushroomkingdom.net/media/smw/wav>
+   [Notifications]: <https://github.com/MLaritz/Vanilla-Notify>
