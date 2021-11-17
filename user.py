@@ -8,6 +8,8 @@ from settings import Settings
 
 # User object
 class User(db.Model, UserMixin):
+    __tablename__ = 'user'
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), nullable=False)
     password_hash = db.Column(db.String(200))
