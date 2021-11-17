@@ -1,5 +1,4 @@
 # Pomodoro - Time Management Web App
-## This branch is for **[Heroku]** and should always able to deploy.
 ### _Made in Python with Flask_
 
 
@@ -13,22 +12,22 @@ This was made as part of the weekly programming challenge hosted by [DevJam].
 The project was made for learning purposes.
 
 ## About the project
-####🛠 Difficulty Level: Beginner
+#### 🛠 Difficulty Level: Beginner
 📅 Start: November 12th<br>
 📅 Deadline: November 18th 16:00 (4PM) GMT
 
-####📝 Project Description
+#### 📝 Project Description
 The Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s. The technique uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks - 5 minutes.
 
-📑User Stories
+##### 📑User Stories
 - [x] User can see a timer for 25 minutes - the working session
 - [x] After the working session is over, the User can see a timer for 5 minutes - the break session
 - [x] User can start / pause, stop and reset the timers
 
-🌟 Bonus features (optional)
+##### 🌟 Bonus features (optional)
 - [x] User can hear a sound playing when the timer hits 00:00 - denoting that the session has ended
-- [ ] User can change / customize the minutes in both sessions before starting
-- [ ] User can set a long break session of 10 minutes. This will be activated every 4th break session
+- [x] User can change / customize the minutes in both sessions before starting
+- [x] User can set a long break session of 10 minutes. This will be activated every 4th break session
 - [ ] Users can see active pomodoro sessions of other users
 - [ ] Users can share their pomodoro sessions with other users to do joint sessions
 
@@ -43,9 +42,9 @@ Python libraries that VoteApp uses:
 - [matplotlib] - data visualization with Python
 
 
-## Installation
+## Installation and running
 
-VoteApp requires [python 3.7+](https://www.python.org/downloads/) to run.
+This app requires [python 3.7+](https://www.python.org/downloads/) to run.
 
 Clone git repo
 ```sh
@@ -60,7 +59,7 @@ pip install -r requirements.txt
 
 run app.py
 ```sh
-python3 app.py
+python app.py
 ```
 
 
@@ -95,3 +94,5 @@ MIT
    [Wikipedia]: <https://en.wikipedia.org/wiki/Pomodoro_Technique>
    [Tomato]: <https://www.seekpng.com/ipng/u2t4o0a9a9r5e6w7_guacamole-apple-tomato-vegetable-clip-art-cartoon-tomato/>
    [Notifications]: <https://github.com/MLaritz/Vanilla-Notify>
+   [Audio]: <https://themushroomkingdom.net/sounds/wav/smb/smb_world_clear.wavy>
+
