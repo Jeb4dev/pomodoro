@@ -448,7 +448,15 @@ img.avatar {
   right: 10px;
   top: auto;
 }
-
+.pswd a{
+  color:#ADDFFF;
+}
+.pswd a:visited{
+  color:#ADDFFF;
+}
+.pswd a:hover{
+  cursor:pointer;
+}
 .title-row{
   display:flex;
   justify-content:flex-start;
