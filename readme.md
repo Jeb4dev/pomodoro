@@ -1,5 +1,4 @@
 # Pomodoro - Time Management Web App
-## This branch is for **[Heroku]** and should always able to deploy.
 ### _Made in Python with Flask_
 
 
