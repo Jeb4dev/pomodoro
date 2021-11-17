@@ -42,9 +42,9 @@ Python libraries that VoteApp uses:
 - [matplotlib] - data visualization with Python
 
 
-## Installation
+## Installation and running
 
-VoteApp requires [python 3.7+](https://www.python.org/downloads/) to run.
+This app requires [python 3.7+](https://www.python.org/downloads/) to run.
 
 Clone git repo
 ```sh
@@ -59,7 +59,7 @@ pip install -r requirements.txt
 
 run app.py
 ```sh
-python3 app.py
+python app.py
 ```
 
 
@@ -94,3 +94,5 @@ MIT
    [Wikipedia]: <https://en.wikipedia.org/wiki/Pomodoro_Technique>
    [Tomato]: <https://www.seekpng.com/ipng/u2t4o0a9a9r5e6w7_guacamole-apple-tomato-vegetable-clip-art-cartoon-tomato/>
    [Notifications]: <https://github.com/MLaritz/Vanilla-Notify>
+   [Audio]: <https://themushroomkingdom.net/sounds/wav/smb/smb_world_clear.wavy>
+
