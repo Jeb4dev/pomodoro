@@ -54,7 +54,7 @@ def home():
                 new_user.set_password(password)
                 db.session.add(new_user)
                 db.session.commit()
-                login_user(user, remember=remember)
+                login_user(new_user, remember=remember)
 
                 flash(f"Hello, {username}. Registering was successful", "success")
                 return redirect(url_for('views.home'))
@@ -102,6 +102,7 @@ def home():
     flash(f"Hello Desktop user, Welcome to use pomodoro clock. Hopefully you have productive time.", "info")
     flash(f"You are not signed in, your settings will not save.", "info")
     return render_template("index.html")
+
 
 # Logout page: Logout user and redirect to homepage.
 @views.route('/logout')
