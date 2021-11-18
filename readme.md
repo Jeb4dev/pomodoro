@@ -31,7 +31,7 @@ The Pomodoro Technique is a time management method developed by Francesco Cirill
 - [x] User can change / customize the minutes in both sessions before starting
 - [x] User can set a long break session of 10 minutes. This will be activated every 4th break session
 - [ ] Users can see active pomodoro sessions of other users
-- [ ] Users can share their pomodoro sessions with other users to do joint sessions
+- [x] Users can share their pomodoro sessions with other users to do joint sessions
 
 
 ## Tech
