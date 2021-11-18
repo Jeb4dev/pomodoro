@@ -5,6 +5,8 @@
 [![N|Solid](https://flask.palletsprojects.com/en/2.0.x/_images/flask-logo.png)](https://flask.palletsprojects.com/en/2.0.x/)
 
 ![image](https://user-images.githubusercontent.com/76889226/141989698-56a3125c-c036-4ee9-a726-acd619797067.png)
+![image](https://user-images.githubusercontent.com/76889226/142459664-77a09689-aea4-48d6-878b-27c0e49c7e30.png)
+
 [Live Demo](https://jeb-pomodoro.herokuapp.com/)
 
 Pomodoro is Pomodoro timer for better productivity.
