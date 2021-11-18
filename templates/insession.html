@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pomodoro - For Productivity</title>
+  <link href="{{url_for('static', filename='css/index.css' )}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='css/notifications.css' )}}" rel="stylesheet">
+  <!--  Import favicon  -->
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.png') }}">
+  <!--  Import icon pack  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!--  Import JS -->
+  <script src="/static/js/index.js"></script>
+  <!--  youtube-->
+  <script src="http://www.youtube.com/player_api"></script>
+  <!-- IO socket -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
+</head>
+<body onload="selectTimerLogic('pomodoro');">
+<script type="text/javascript" charset="utf-8">
+
+    var socket = io();
+
+    function togglesSideBarRight() {
+    var right = document.getElementById('right');
+    var rightNav = document.getElementById('sideNavRight');
+
+    if (right.style.flexBasis == "15%") {
+      setTimeout(function () {
+            right.style.flexBasis = "0%";
+            rightNav.style.width = "0%";
+            right.style.visibility = "hidden";
+            rightNav.style.display = "none";
+        }, 400);
+      rightNav.style.animation = "rightToggleOff 0.5s";
+      right.style.animation = "rightToggleOff2 0.5s";
+    } else {
+        right.style.flexBasis = "0%";
+        rightNav.style.width = "0%";
+        rightNav.style.display = "block";
+        right.style.visibility = "visible";
+        setTimeout(function () {
+          rightNav.style.width = "15%";
+          right.style.flexBasis = "15%";
+        }, 400);
+      rightNav.style.animation = "rightToggleOn 0.5s";
+      right.style.animation = "rightToggleOn2 0.5s";
+    }
+}
+function togglesSideBarLeft() {
+    var left = document.getElementById('left');
+    var leftNav = document.getElementById('sideNavLeft');
+    if (left.style.flexBasis == "20%") {
+      setTimeout(function () {
+            left.style.flexBasis = "0%";
+            left.style.visibility = "hidden";
+            leftNav.style.width = "0%";
+            leftNav.style.display = "none";
+        }, 400);
+      leftNav.style.animation = "leftToggleOff 0.5s";
+      left.style.animation = "leftToggleOff2 0.5s";
+    } else {
+        leftNav.style.display = "block";
+        left.style.visibility = "visible";
+        setTimeout(function () {
+          leftNav.style.width = "20%";
+          left.style.flexBasis = "20%";
+        }, 400);
+      leftNav.style.animation = "leftToggleOn 0.5s";
+      left.style.animation = "leftToggleOn2 0.5s";
+    }
+}
+
+//function toggleMain(){
+//    var right = document.getElementById('right');
+//    var left = document.getElementById('left');
+//    var main = document.getElementById('main');
+//    if (right.style.flexBasis == "0%") {
+//      if (left.style.flexBasis == "0%"){
+//        main.style.flexBasis = "100%";
+//      } else {
+//        main.style.flexBasis = "80%";
+//      }
+//    } else {
+//      if (left.style.flexBasis == "0%"){
+//        main.style.flexBasis = "85%";
+//      } else {
+//        main.style.flexBasis = "65%";
+//      }
+//    }
+//}
+
+var pomodoro_length = 25;
+var short_break_length = 5;
+var long_break_length = 15;
+
+var timerAdd = 60000 * pomodoro_length + 1000;
+var now = new Date().getTime();
+var countDownDate = new Date().getTime() + timerAdd;
+var reset = false;
+var pause = true;
+var playing = false;
+var music_volume = 100;
+var timer_volume = 0.2;
+youtube_video_id = 'sjkrrmBnpGE'
+
+function selectTimerLogic(active) {
+    var pomodoro = document.getElementById('pomodoro');
+    var shortBreak = document.getElementById('short-break');
+    var longBreak = document.getElementById('long-break');
+
+    if (active == "pomodoro") {
+      pomodoro.className = "header-btn-active";
+      shortBreak.className = "header-btn";
+      longBreak.className = "header-btn";
+
+      timerAdd = 60000 * pomodoro_length + 1000;
+      now = new Date().getTime();
+      countDownDate = new Date().getTime() + timerAdd;
+      reset = true;
+      pause = true;
+
+    }
+    else if (active == "short-break"){
+      pomodoro.className = "header-btn";
+      shortBreak.className = "header-btn-active";
+      longBreak.className = "header-btn";
+
+      timerAdd = 60000 * short_break_length + 1000;
+      now = new Date().getTime();
+      countDownDate = new Date().getTime() + timerAdd;
+      reset = true;
+      pause = true;
+    }
+    else{
+      pomodoro.className = "header-btn"
+      shortBreak.className = "header-btn"
+      longBreak.className = "header-btn-active"
+
+      timerAdd = 60000 * long_break_length + 1000
+      now = new Date().getTime();
+      countDownDate = new Date().getTime() + timerAdd;
+      reset = true;
+      pause = true;
+    }
+}
+
+// toggle task done / not done
+function task(DivId) {
+    var divID = document.getElementById(DivId);
+
+    if (divID.className == "task") {
+      divID.className = "task-done"
+    }
+    else{
+      divID.className = "task"
+    }
+}
+pause = true
+last_distance = countDownDate - now
+function play() {socket.emit('play', {'username': "{{username}}", 'room': "{{chatRoomName}}", 'pause': pause});}
+function playlogic() {
+ var PlayBtn = document.getElementById('PlayBtn');
+ var PauseBtn = document.getElementById('PauseBtn');
+ pause = !pause
+ if (!pause) {
+        player.playVideo();
+
+        PlayBtn.style.display = "none";
+        PauseBtn.style.display = "block";
+
+    } else {
+        player.pauseVideo();
+        PlayBtn.style.display = "block";
+        PauseBtn.style.display = "none";
+    }
+}
+socket.on('uploadPause', function(pauseV) {
+        pause=pauseV
+        playlogic()
+    });
+function resetTime() {socket.emit('reset', {'username': "{{username}}", 'room': "{{chatRoomName}}"});}
+function resetTimelogic() {
+      countDownDate = new Date().getTime() + timerAdd;
+      reset = true;
+      pause = true;
+      player.stopVideo();
+}
+socket.on('resetTimer', function() {
+        resetTimelogic()
+    });
+function selectTimer(active) {socket.emit('active', {'username': "{{username}}", 'room': "{{chatRoomName}}", 'active': active});}
+socket.on('changeActive', function(active) {
+        selectTimerLogic(active)
+    });
+// Update the count down every 1 second
+var x = setInterval(function() {
+  // Get today's date and time
+  var now = new Date().getTime();
+  if (!reset) {
+      if (pause) {
+        countDownDate = new Date().getTime() + last_distance;
+      }
+  } else {
+    reset = false
+  }
+
+
+  var distance = countDownDate - now;
+  last_distance = distance
+
+
+
+  // Time calculations for days, hours, minutes and seconds
+  //var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  //var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+
+  document.getElementById("countdown").innerHTML = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+  if (!pause) {
+    document.title = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0') + " - Pomodoro Time Left";
+  } else {
+    document.title = "Pomodoro - For Productivity";
+  }
+
+  // If the count down is over, write some text
+  if (playing) {
+    if (distance > 0){
+        playing = false}}
+  if (distance < 0) {
+    if (!playing) {
+        playing = true
+        var a = new Audio("/static/audio/world_clear.wav");
+        a.play();
+        a.volume = timer_volume;
+        if (timerAdd >= 60000 * pomodoro_length + 1100) {
+              timerAdd = 60000 * short_break_length
+              now = new Date().getTime();
+              countDownDate = new Date().getTime() + timerAdd;
+              reset = true;
+              pause = true;
+        } else {
+          timerAdd = 60000 * pomodoro_length + 1100
+          now = new Date().getTime();
+          countDownDate = new Date().getTime() + timerAdd;
+          reset = true;
+          pause = true;
+          player.stopVideo();
+        }
+    }
+    document.getElementById("countdown").innerHTML = "00:00";
+  }
+
+}, 1000);
+
+var pick_img = 1
+function next_img(custom_url) {
+  var images = []
+  images[1] = 'url(/static/images/1.jpg)';//https://images.unsplash.com/photo-1463288889890-a56b2853c40f
+  images[2] = 'url(/static/images/2.jpeg)';//https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg
+  images[3] = 'url(/static/images/3.jpg)';//https://images.pexels.com/photos/3075993/pexels-photo-3075993.jpeg
+  images[4] = 'url(/static/images/4.jpg)';//https://images.pexels.com/photos/2387418/pexels-photo-2387418.jpeg
+  images[5] = 'url(/static/images/5.jpeg)';//https://images.pexels.com/photos/235621/pexels-photo-235621.jpeg
+  images[6] = 'url(/static/images/6.jpg)';//https://images.pexels.com/photos/1840794/pexels-photo-1840794.png
+  images[7] = 'url(/static/images/7.jpg)';//https://images.pexels.com/photos/302769/pexels-photo-302769.jpeg
+  images[8] = 'url(/static/images/8.jpg)';//https://images.pexels.com/photos/6992/forest-trees-northwestisbest-exploress.jpg
+  images[9] = 'url(/static/images/9.jpeg)';//https://images.pexels.com/photos/132037/pexels-photo-132037.jpeg
+  images[10] = 'url(/static/images/10.jpeg)';//https://images.pexels.com/photos/315938/pexels-photo-315938.jpeg
+
+  if (custom_url) {
+    images[10] = ('url('+custom_url+')');//custom url
+    pick_img = 10
+  } else {
+      pick_img = pick_img + 1
+      if (pick_img == 11) {
+        pick_img = 1;
+      }
+  }
+
+
+  document.getElementById("main-template").style.backgroundImage = images[pick_img]
+//  document.getElementById("main-template").backgroundImage = images[pick_img]
+}
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function toggleMusicDropdown() {
+  document.getElementById("musicDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.control-btn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+// change music
+function play_music(video_id, id_) {
+    if (video_id == "none") {
+    player.stopVideo();} else {
+    youtube_video_id = video_id;
+    playNewVideo();
+    }
+    var selected = document.getElementById(id_);
+    var musicBnt = document.getElementById("control-btn");
+    musicBnt.innerHTML = selected.innerHTML
+}
+
+
+// youtube player
+
+// 2. This code loads the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// 3. This function creates an <iframe> (and YouTube player)
+//    after the API code downloads.
+var player;
+function onYouTubeIframeAPIReady() {
+player = new YT.Player('player', {
+  height: '390',
+  width: '640',
+  videoId: youtube_video_id,
+  playerVars: {
+    'playsinline': 1
+  },
+  events: {
+    'onReady': onPlayerReady,
+//    'onStateChange': onPlayerStateChange
+  }
+});
+}
+
+// 4. The API will call this function when the video player is ready.
+function onPlayerReady(event) {
+event.target.pauseVideo();
+}
+function changeVolume() {
+player.setVolume(music_volume);
+}
+function stopVideo() {
+player.stopVideo();
+}
+function pauseVideo() {
+player.pauseVideo();
+}
+function playVideo() {
+player.playVideo();
+}
+function playNewVideo() {
+player.loadVideoById(youtube_video_id)
+if (pause) {player.pauseVideo();}
+
+}
+var modal;
+// Get the modal
+function openModule(moduleId) {
+  modal = document.getElementById(moduleId);
+  modal.style.display='block';
+
+  var short_break = document.getElementById("short-break_input");
+  short_break.value = short_break_length
+
+}
+function closeModule() {
+  modal.style.display='none';
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+      modal.style.display = "none";
+  }
+  if (event.target.id == "main-template") {
+      if (document.getElementById("sideNavLeft").style.display == "block") {togglesSideBarLeft()}
+      if (document.getElementById("sideNavRight").style.display == "block") {togglesSideBarRight()}
+  }
+}
+
+function defineMusic() {
+    if (document.getElementById("custom-music-id").value) {
+    youtube_video_id = document.getElementById("custom-music-id").value;
+    playNewVideo();
+    }
+    music_volume = document.getElementById("music-volume").value;
+    timer_volume = (document.getElementById("timer-volume").value / 100);
+    changeVolume();
+}
+
+
+function uploadBackground() {
+    custom_url = document.getElementById("custom-bg-img-url").value;
+    next_img(custom_url);
+}
+
+
+    ////////////////
+    //  SOCKETS   //
+    ////////////////
+
+
+
+
+    socket.on('greetings', function(msg) {
+        console.log(msg)
+        socket.emit('greetings', {'username': "{{username}}", 'room': "{{chatRoomName}}", 'userId': socket.id});
+    });
+
+
+    socket.on('connect', function() {
+        console.log("connected")
+    });
+
+    socket.on('disconnect', function() {
+        console.log("disconnected")
+    });
+
+    socket.on('notify', function(txt) {
+        div = document.getElementById("main-div")
+        connected = document.getElementById("connected")
+        console.log(txt);
+
+        var alert = document.createElement('div');
+        alert.setAttribute('class', 'vnotify-item vnotify-notify');
+        alert.setAttribute('style', 'display: block;');
+        alert.setAttribute('id', 'alert');
+
+        var msg = document.createElement('div');
+        msg.setAttribute('class', 'vnotify-text');
+        msg.innerHTML = txt;
+
+        var close = document.createElement('span');
+        close.setAttribute('class', 'vn-close');
+        close.setAttribute('onclick', 'document.getElementById("alert").remove()');
+
+        alert.appendChild(msg);
+        alert.appendChild(close);
+
+        div.appendChild(alert);
+    });
+
+    socket.on('connectedusers', function(txt) {
+
+
+        var user = document.getElementById('insession');
+        user.innerHTML = txt.join("<br><br>");
+    });
+
+    // browser - for other users
+    socket.on('user_left_group', function(user){
+         console.log(user + " disconnected")
+    })
+
+    window.addEventListener('onunload', function (e) {
+            console.log("unload")
+            e.preventDefault();
+            e.returnValue = ' ';
+        });
+
+    var dummy = document.createElement('input'),
+    text = window.location.href;
+
+
+    function CopyToClipboard() {
+      /* Get the text field */
+      var copyText = document.getElementById("myInput");
+
+      /* Select the text field */
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+       /* Copy the text inside the text field */
+      navigator.clipboard.writeText(copyText.value);
+
+      /* Alert the copied text */
+      notification("Session link copied to clipboard.");
+    }
+
+    function notification(txt) {
+        div = document.getElementById("main-div")
+        connected = document.getElementById("connected")
+        console.log(txt);
+
+        var alert = document.createElement('div');
+        alert.setAttribute('class', 'vnotify-item vnotify-notify');
+        alert.setAttribute('style', 'display: block;');
+        alert.setAttribute('id', 'alert');
+
+        var msg = document.createElement('div');
+        msg.setAttribute('class', 'vnotify-text');
+        msg.innerHTML = txt;
+
+        var close = document.createElement('span');
+        close.setAttribute('class', 'vn-close');
+        close.setAttribute('onclick', 'document.getElementById("alert").remove()');
+
+        alert.appendChild(msg);
+        alert.appendChild(close);
+
+        div.appendChild(alert);
+    }
+
+    function defineIntervals() {
+        pomodoro_length = document.getElementById("pomodoro-time_input").value;
+        short_break_length = document.getElementById("short-break_input").value;
+        long_break_length = document.getElementById("long-break_input").value;
+        socket.emit('defineIntervals', {'username': "{{username}}", 'room': "{{chatRoomName}}", 'pomodoro_length': pomodoro_length, 'short_break_length': short_break_length, 'long_break_length': long_break_length});
+    }
+    socket.on('uploadIntervals', function(data) {
+        pomodoro_length = data["pomodoro_length"]
+        short_break_length = data["short_break_length"]
+        long_break_length = data["long_break_length"]
+        console.log(long_break_length)
+    });
+
+
+
+</script>
+<div id="player" style="position: absolute; top: -9999px; left: -9999px;"></div>
+  <div id="main-template">
+    <div class="row">
+      <div class="cell" id="left">
+        <aside class="sideNavLeft" id="sideNavLeft">
+          <div class="left-nav">
+            <div class="left-nav-title">Tasks</div>
+            <br>
+            <a href="#" onclick="task('task0')">
+              <div class="left-nav-content">
+                <div id="task0" class="task">
+                  Fix padding
+                </div>
+              </div>
+            </a>
+            <a href="#" onclick="task('task1')">
+              <div class="left-nav-content">
+                <div id="task1" class="task-done">
+                  Check new Issues
+                </div>
+              </div>
+            </a>
+            <div class="left-nav-hr"><hr></div>
+
+            <div class="left-nav-title">in Session</div>
+
+            <br>
+            <a style="cursor:pointer">
+              <div class="left-nav-content" id="insession">
+                  Mark Zuckerberg
+                <br>
+                  Steve Jobs
+              </div>
+            </a>
+            <a onclick="CopyToClipboard();" style="cursor:pointer">
+              <input type="text" value="https://jeb-pomodoro.herokuapp.com/session/{{chatRoomName}}" id="myInput" style="visibility:hidden;">
+              <div class="left-nav-content">
+                  Invite to Session
+              </div>
+            </a>
+            <br>
+            <a href="/" style="cursor:pointer">
+              <div class="left-nav-content">
+                  Leave Session
+              </div>
+            </a>
+          </div>
+        </aside>
+      </div>
+
+      <div class="cell" id="main">
+        <main class="row">
+          <div class="cell">
+            <div class="row">
+              <div class="cell" id="header-cell-left" >
+                <div class="row">
+                  <div class="cell">
+                    <div>
+                      <button class="header-btn-tasks" onclick="togglesSideBarLeft()">Tasks</button>
+                    </div>
+                  </div>
+                  <div class="cell">
+                    <div></div>
+                  </div>
+                  <div class="cell">
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="cell" id="header-cell-middle">
+                <div class="row">
+                  <div class="cell">
+                    <div>
+                      <button class="header-btn" id="pomodoro" onclick="selectTimer('pomodoro');">Pomodoro</button>
+                    </div>
+                  </div>
+                  <div class="cell">
+                    <div>
+                      <button class="header-btn" id="short-break" onclick="selectTimer('short-break');">Short break</button>
+                    </div>
+                  </div>
+                  <div class="cell">
+                    <div>
+                      <button class="header-btn" id="long-break" onclick="selectTimer('long-break')">Long break</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="cell" id="header-cell-right">
+                <div id="i1gc" class="row">
+                  <div class="cell">
+                    <div></div>
+                  </div>
+                  <div class="cell">
+                    <div></div>
+                  </div>
+                  <div class="cell">
+                    <div class="cell">
+                      <div title="Account">
+                        <button class="header-btn-circle"  onclick="location.href='/'">
+                          <i class="fa fa-user"></i>
+                        </button>
+                      </div>
+                      <div>
+                        <button class="header-btn-circle" onclick="togglesSideBarRight()"><i class="fa fa-cog"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <div class="cell" id="right">
+        <aside class="sideNavRight" id="sideNavRight">
+          <div class="right-nav">
+            <a href="#" onclick="next_img();">   <div class="right-nav-content">Change background</div>  </a>
+            <a href="#">   <div class="right-nav-content" onclick="openModule('upload-module')">Upload background</div>  </a>
+            <div class="right-nav-hr"><hr></div>
+            <a href="#">   <div class="right-nav-content" onclick="openModule('customize-module')">Customize timer</div>  </a>
+            <a href="#">   <div class="right-nav-content" onclick="openModule('music-module')">Music settings</div> </a>
+            <div class="right-nav-hr"><hr></div>
+            <a href="https://github.com/JesperKauppinen/pomodoro" target="_blank"><div class="right-nav-content" title="Open the project Github page on the new tab.">Github</div> </a>
+            <a href="#">   <div class="right-nav-content" onclick="openModule('credits-module')">Credits</div>  </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+<!--    Start of notifications    -->
+<div class="vnotify-container vn-top-right" id="main-div"></div>
+<!--    End of notifications    -->
+
+    <p id="countdown">25:00</p>
+    <div class="row">
+      <div class="cell"></div>
+      <div class="cell">
+        <div class="row">
+          <div id="play">
+            <button onclick="play();" class="control-btn-circle" id="PlayBtn" title="pause/play timer"><i class="fa fa-play-circle"></i></button>
+            <button onclick="play();" class="control-btn-circle" id="PauseBtn" title="pause/play timer" style="display:none;"><i class="fa fa-pause-circle"></i></button>
+          </div>
+
+          <div id="reset">
+            <button onclick="resetTime();" class="control-btn-circle" title="reset timer"><i class="fa fa-history"></i></button>
+          </div>
+
+          <div id="music">
+            <div id="musicDropdown" class="dropdown-content">
+              <a href="#" onclick="play_music('hGIW2fDb0jg', 'change1'); toggleMusicDropdown();" id="change1">Coding music</a>
+              <a href="#" onclick="play_music('sjkrrmBnpGE', 'change3'); toggleMusicDropdown();" id="change3">Studying</a>
+              <a href="#" onclick="play_music('jgpJVI3tDbY', 'change7'); toggleMusicDropdown();" id="change7">Piano</a>
+              <a href="#" onclick="play_music('neV3EPgvZ3g', 'change8'); toggleMusicDropdown();" id="change8">Jazz</a>
+              <a href="#" onclick="play_music('lE6RYpe9IT0', 'change2'); toggleMusicDropdown();" id="change2">Nature</a>
+              <a href="#" onclick="play_music('vPhg6sc1Mk4', 'change10'); toggleMusicDropdown();" id="change10">Ocean</a>
+              <a href="#" onclick="play_music('co7KgV2edvI', 'change9'); toggleMusicDropdown();" id="change9">Airplane</a>
+              <a href="#" onclick="play_music('TA4mhuFF-Go', 'change11'); toggleMusicDropdown();" id="change11">Train</a>
+              <a href="#" onclick="play_music('b3uIKzgcDxo', 'change4'); toggleMusicDropdown();" id="change4">Killer tomatoes</a>
+              <a href="#" onclick="play_music('none', 'change5'); toggleMusicDropdown();" id="change5">None</a>
+              <a href="#" onclick="play_music('custom', 'change6'); toggleMusicDropdown(); openModule('music-module');" id="change6">Custom</a>
+            </div>
+            <button class="control-btn" id="control-btn" onclick="toggleMusicDropdown()" title="select music">Studying music</button>
+          </div>
+        </div>
+      </div>
+      <div class="cell"></div>
+    </div>
+
+<!--  Start of modules    -->
+    <div id="login-module" class="modal">
+      <form class="modal-content animate" method="post">
+        <input name="post-type" style="visibility:hidden;" value="login">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Login</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required>
+
+          <label class="input-title"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+          <div class="psw-container">
+            <div class="title-row">
+              <div class="cell">
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+              </div>
+              <div class="cell">
+                <span class="pswd">Don't have account yet? <a onclick='
+                                document.getElementById("login-module").style.display = "none";
+                                openModule("register-module");
+                                '>Register</a> instead.</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="login-btn">Login</button>
+        </div>
+      </form>
+    </div>
+    <div id="register-module" class="modal">
+      <form class="modal-content animate" method="post">
+        <input name="post-type" style="visibility:hidden;" value="register">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Register</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" maxlength="31" minlength="2" required>
+
+          <label class="input-title"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw"  required>
+          <input type="password" placeholder="Confirm Password" name="psw2" required>
+
+          <div class="psw-container">
+            <div class="title-row">
+              <div class="cell">
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+              </div>
+              <div class="cell">
+                <span class="pswd">Already have account? <a
+                        onclick='
+                                document.getElementById("register-module").style.display = "none";
+                                openModule("login-module");
+                                '>
+                  Login</a> instead.</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="login-btn">Register</button>
+        </div>
+      </form>
+    </div>
+    <div id="upload-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="return false;">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Upload Custom Background Image</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Image url</b></label>
+          <input type="url" placeholder="Enter image url" name="custom-bg-img-url" id="custom-bg-img-url" required>
+
+          <button type="submit" onclick="uploadBackground()" class="login-btn">Upload</button>
+        </div>
+      </form>
+    </div>
+    <div id="customize-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="return false;">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Customize intervals</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule();" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Pomodoro</b></label>
+          <input type="number" min="0" max="120" value="25" name="pomodoro-time" id="pomodoro-time_input" required>
+
+          <label class="input-title"><b>Short break</b></label>
+          <input type="number" min="1" max="120" value="5" name="short-break" id="short-break_input" required>
+
+          <label class="input-title"><b>Long break</b></label>
+          <input type="number" min="1" max="120" value="15" name="long-break" id="long-break_input" required>
+
+          <button type="submit" onclick="closeModule(); defineIntervals();" class="login-btn">Confirm</button>
+        </div>
+      </form>
+    </div>
+    <div id="music-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="return false;" >
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Music setting</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Music volume</b></label>
+          <input type="number" min="0" max="100" value="100" id="music-volume" required>
+
+          <label class="input-title"><b>Time end volume</b></label>
+          <input type="number" min="0" max="100" value="20" id="timer-volume" required>
+
+          <label class="input-title"><b>Custom music</b></label>
+          <input type="text" placeholder="Enter youtube video id" id="custom-music-id">
+
+          <button type="submit" onclick="closeModule();defineMusic()" class="login-btn">Confirm</button>
+        </div>
+      </form>
+    </div>
+    <div id="credits-module" class="modal">
+
+      <form class="modal-content animate" onsubmit="alert('This function does not exist.')"  style="width:30%;">
+        <div class="imgcontainer">
+          <div class="title-row">
+            <div class="cell">
+              <span class="form-title">Credits</span>
+            </div>
+            <div class="cell">
+              <span onclick="closeModule()" class="close" title="Close">&times;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <label class="input-title"><b>Music</b></label><br>
+          <label class="input-title"><b><a href="https://themushroomkingdom.net/media/smw/wav" style="text-decoration:none;" target="_blank">- Session end sound</a></b></label><br>
+          <label class="input-title"><b><a href="https://www.youtube.com/" style="text-decoration:none;" target="_blank">- Background music</a> youtube embed iframe</b></label><br>
+
+          <br><label class="input-title"><b>Pictures</b></label><br>
+          <label class="input-title"><b><a href="https://www.seekpng.com/ipng/u2t4o0a9a9r5e6w7_guacamole-apple-tomato-vegetable-clip-art-cartoon-tomato/"
+                                           style="text-decoration:none;" target="_blank">- Cartoon tomato</a></b></label><br>
+          <label class="input-title"><b><a href="https://www.pexels.com/" style="text-decoration:none;" target="_blank">- Background images</a></b></label><br>
+        </div>
+      </form>
+    </div>
+<!--  End of modules    -->
+
+  </div>
+  <div class="row" id="second-template">
+    <div id="img">
+      <div class="cell" id="second-template-div">
+        <div class="row">
+          <div class="cell">
+            <h1 class="heading">What is Pomodoro?
+              <br/>
+            </h1>
+            <p class="paragraph">The Pomodoro Technique is a time management method, designed to increase your productivity and creativity.
+              It uses a timer to break work into intervals, traditionally 25 minutes in length, separated by short breaks.
+              Each interval is known as a pomodoro, from the Italian word for 'tomato'.
+            </p>
+          </div>
+        </div>
+        <div class="row" id="i3pfa">
+          <div class="cell" id="ih06h">
+            <h1 class="heading">Features?<br/></h1>
+            <p class="paragraph">
+              - 25 min timer for work.<br/>
+              - 5 min timer for short break.<br/>
+              - 15 min timer for long break.<br/>
+              - Customizable timer for work and breaks.<br/>
+              - Pause and reset buttons.<br/>
+              <br/>
+              - Multiple background images.<br/>
+              - Upload custom background image.<br/>
+              <br/>
+              - There are several choice of soundtracks to maximize concentration.<br/>
+              - Sound indicating the end of session.<br/>
+              - Ability to change music volume.<br/>
+              - Play custom musics with YouTube embed videoID<br/>
+              <br/>
+            </p>
+            <h1 class="heading" id="iza8c">Future features<br/></h1>
+            <p class="paragraph">
+              - List your tasks and cross out them when you are ready.<br/>
+              - Share your session with others and let them join your session.<br/>
+              - Scoreboard of top "Pomodorors".<br/>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
