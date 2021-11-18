@@ -1,8 +1,11 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
+from flask_socketio import emit
 
 from user import User
-from __init__ import db
+from __init__ import db, socketio
+
+import events
 """     This file handle showing landing page:  """
 
 views = Blueprint('views', __name__)
@@ -20,7 +23,7 @@ def home():
                   "notify")
             return render_template("mobile.html")
         else:
-            return render_template("authenticated.html")
+            return render_template("authenticated.html", username=current_user.username)
 
     if request.method == "POST":
         # Get post request type
@@ -111,3 +114,11 @@ def logout():
     logout_user()
     flash('Successfully logged out', category='success')
     return redirect(url_for('views.home'))
+
+
+@views.route('/session/<session>', methods=['GET', 'POST'])
+def sessions(session):
+    if current_user.is_authenticated:
+        username = current_user.username
+    else: username = f"Guest ({request.remote_addr})"
+    return render_template('insession.html', username=username, chatRoomName=session)
