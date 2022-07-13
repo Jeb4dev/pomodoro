@@ -2,10 +2,9 @@ function togglesSideBarRight() {
     var right = document.getElementById('right');
     var rightNav = document.getElementById('sideNavRight');
 
-    if (right.style.flexBasis == "15%") {
+    if (right.style.flexBasis == "20%") {
       setTimeout(function () {
             right.style.flexBasis = "0%";
-            rightNav.style.width = "0%";
             right.style.visibility = "hidden";
             rightNav.style.display = "none";
         }, 400);
@@ -13,12 +12,10 @@ function togglesSideBarRight() {
       right.style.animation = "rightToggleOff2 0.5s";
     } else {
         right.style.flexBasis = "0%";
-        rightNav.style.width = "0%";
         rightNav.style.display = "block";
         right.style.visibility = "visible";
         setTimeout(function () {
-          rightNav.style.width = "15%";
-          right.style.flexBasis = "15%";
+          right.style.flexBasis = "20%";
         }, 400);
       rightNav.style.animation = "rightToggleOn 0.5s";
       right.style.animation = "rightToggleOn2 0.5s";
@@ -31,16 +28,15 @@ function togglesSideBarLeft() {
       setTimeout(function () {
             left.style.flexBasis = "0%";
             left.style.visibility = "hidden";
-            leftNav.style.width = "0%";
             leftNav.style.display = "none";
         }, 400);
       leftNav.style.animation = "leftToggleOff 0.5s";
       left.style.animation = "leftToggleOff2 0.5s";
     } else {
+        right.style.flexBasis = "0%";
         leftNav.style.display = "block";
         left.style.visibility = "visible";
         setTimeout(function () {
-          leftNav.style.width = "20%";
           left.style.flexBasis = "20%";
         }, 400);
       leftNav.style.animation = "leftToggleOn 0.5s";

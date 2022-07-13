@@ -40,10 +40,12 @@
   -ms-border-radius: 5px;
   border-radius: 5px;
   animation-play-state:running;
-  animation: fade 10s forwards;
+  animation: fade 7s forwards;
   margin-bottom: 15px;}
-  .vnotify-item:hover {
-    animation-play-state:paused;}
+
+ .vnotify-item:hover {
+    animation: fadeIn 0s forwards;
+    }
 
 .vnotify-title {
   font-weight: bold; }
@@ -70,10 +72,15 @@
 
 /*# sourceMappingURL=vanilla-notify.css.map */
 
-/* purkkaa niin vitusti */
+/* fading notifications */
 @keyframes fade {
   0% {    opacity: 1; display: block; position:relative;top:auto;   }
   30% {    opacity: 1; display: block; position:relative;top:auto;  }
   99% {    opacity: 0.1; display: block; position:relative;top:auto;}
   100% {    opacity: 0; display: none; position:absolute; top:-1000px;}
+}
+/* fading in notifications on hover */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
