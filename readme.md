@@ -36,11 +36,12 @@ The Pomodoro Technique is a time management method developed by Francesco Cirill
 
 ## Tech
 
-Python libraries that VoteApp uses:
+Python libraries that Pomodoro uses:
 
 - [Flask] - Micro web framework
 - [Flask login] - provides user session management for Flask.
 - [Flask-SQLAlchemy] - adds support for SQLAlchemy.
+- [SocketIO]() - websockets for multi user session
 
 
 ## Installation and running
