@@ -82,7 +82,7 @@ Give feedback, suggest new features, maybe even create pull request.
 
 ## License
 
-MIT
+[MIT](LICENSE)
 
    [Flask]: <https://flask.palletsprojects.com/en/2.0.x/>
    [Flask login]: <https://flask-login.readthedocs.io/en/latest/>
