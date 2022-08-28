@@ -7,7 +7,7 @@
 ![image](https://user-images.githubusercontent.com/76889226/141989698-56a3125c-c036-4ee9-a726-acd619797067.png)
 ![image](https://user-images.githubusercontent.com/76889226/142459664-77a09689-aea4-48d6-878b-27c0e49c7e30.png)
 
-[Live Demo](https://jeb-pomodoro.herokuapp.com/)
+[Live Demo](https://pomodoro.jeb4.dev)
 
 Pomodoro is Pomodoro timer for better productivity.
 This was made as part of the weekly programming challenge hosted by [DevJam].
@@ -41,7 +41,6 @@ Python libraries that VoteApp uses:
 - [Flask] - Micro web framework
 - [Flask login] - provides user session management for Flask.
 - [Flask-SQLAlchemy] - adds support for SQLAlchemy.
-- [matplotlib] - data visualization with Python
 
 
 ## Installation and running
@@ -75,9 +74,8 @@ Give feedback, suggest new features, maybe even create pull request.
 - [GrapesJS] - Building templates without codings!
 - [Wikipedia] - What is Pomodoro?
 - [Tomato] - Image used on website.
-- [Audio] - Session has ended Notification .
+- [Audio] - Session has ended alert.
 - [Notifications] - Styling for notifications
-
 
 
 ## License
@@ -88,8 +86,6 @@ Give feedback, suggest new features, maybe even create pull request.
    [Flask login]: <https://flask-login.readthedocs.io/en/latest/>
    [Flask-SQLAlchemy]: <https://flask-sqlalchemy.palletsprojects.com/en/2.x/>
    [matplotlib]: <https://matplotlib.org/>
-   
-   [heroku]: <https://www.heroku.com/>
    
    [GrapesJS]: <https://grapesjs.com/>
    
