@@ -1,8 +1,14 @@
+from os import environ
+
 from __init__ import create_app
-from flask_socketio import SocketIO
 
 app, socketio = create_app()
 
 if __name__ == '__main__':
-    # socketio.run(app,  debug=True, host="0.0.0.0", port=4999)
-    socketio.run(app)
+    socketio.run(
+        app,
+        debug=environ.get("FLASK_DEBUG") or True,
+        host="127.0.0.1",
+        port=environ.get("BIND_PORT") or 8000,
+        allow_unsafe_werkzeug=True
+    )

@@ -8,8 +8,8 @@ class Config:
     """Set Flask configuration from environment variables."""
 
     FLASK_APP = 'wsgi.py'
-    FLASK_ENV = environ.get('FLASK_ENV')
-    SECRET_KEY = environ.get('SECRET_KEY') or 'nald%!nldKLQWH19GBD2ldfkwADZ612EMN'
+    FLASK_ENV = environ.get('FLASK_ENV') or True
+    SECRET_KEY = environ.get('SECRET_KEY') or 'ZADFpvM@RnH5%@KcECduv2RpPCuWh@&&'
 
     # Static Assets
     STATIC_FOLDER = 'static'
@@ -17,12 +17,6 @@ class Config:
     COMPRESSOR_DEBUG = environ.get('COMPRESSOR_DEBUG')
 
     # Flask-SQLAlchemy
-    DB_NAME = "database.db"
-    db_url = environ.get("DATABASE_URL")
-    if db_url is not None:
-        db_url = f"postgresql{db_url[8:]}"
-    else:
-        db_url = f"sqlite:///{DB_NAME}"
-    SQLALCHEMY_DATABASE_URI = db_url
+    SQLALCHEMY_DATABASE_URI: str = environ.get('DATABASE_URL', 'sqlite:///app.db')
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
