@@ -12,7 +12,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - 80:80
+      - "${BIND_PORT:-80}:80" # Dynamically set the port from BIND_PORT or default to 80
     volumes:
       - app-data:/app
     environment:
@@ -21,8 +21,9 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - DATABASE_URL=${DATABASE_URL}
       - FLASK_DEBUG=${FLASK_DEBUG}
+      - BIND_PORT=80
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:80 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:${BIND_PORT:-80} || exit 1"]
       interval: 10s
       timeout: 10s
       retries: 3
