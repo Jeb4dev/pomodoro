@@ -8,7 +8,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: python app.py
     depends_on:
       db:
         condition: service_healthy
