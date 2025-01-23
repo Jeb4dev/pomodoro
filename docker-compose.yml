@@ -1,0 +1,54 @@
+# documentation: https://github.com/Jeb4dev/pomodoro
+# slogan: A Pomodoro app to manage productivity.
+# tags: productivity, flask, pomodoro
+# port: 80
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python app.py
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 80:80
+    volumes:
+      - app-data:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - FLASK_DEBUG=${FLASK_DEBUG}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80 || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+
+  db:
+    image: mysql:8
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  app-data:
+  mysql-data:
